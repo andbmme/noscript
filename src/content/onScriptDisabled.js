@@ -4,7 +4,7 @@ function onScriptDisabled() {
     // force show NOSCRIPT elements content
     let replacement = createHTMLElement("span");
     replacement.innerHTML = noscript.innerHTML;
-    noscript.parentNode.replaceChild(replacement, noscript);
+    noscript.replaceWith(replacement);
     // emulate meta-refresh
     let meta =  replacement.querySelector('meta[http-equiv="refresh"]');
     if (meta) {
@@ -15,7 +15,7 @@ function onScriptDisabled() {
   if (refresh) {
     let html = document.documentElement.outerHTML;
     window.addEventListener("load", e => {
-      let document = window.wrappedJSObject.document;
+      let document = window.wrappedJSObject ? window.wrappedJSObject.document : window.document;
       document.open();
       document.write(html);
       document.close();

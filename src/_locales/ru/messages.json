@@ -64,7 +64,7 @@
         "description": ""
     },
     "AutoAllowTopLevel": {
-        "message": "Временно разрешать документы верхнего уровня по умолчанию",
+        "message": "Временно установить «ДОВЕРЕННЫЕ» для сайтов верхнего уровня",
         "description": ""
     },
     "AutoReload": {
@@ -84,7 +84,7 @@
         "description": ""
     },
     "BlockedObjects": {
-        "message": "Заблокированные объекты",
+        "message": "Объекты, заблокированные NoScript’ом",
         "description": ""
     },
     "BookmarkSync": {
@@ -97,6 +97,10 @@
     },
     "CascadePermissions": {
         "message": "Каскадное разрешение скриптов третьей стороны",
+        "description": ""
+    },
+    "CascadeRestrictions": {
+        "message": "Каскадное применение ограничений документов верхнего уровня к субдокументам",
         "description": ""
     },
     "ClearClickDescription": {
@@ -164,7 +168,7 @@
         "description": ""
     },
     "Description": {
-        "message": "Дополнительная защита для Firefox: NoScript позволяет разрешать JavaScript, Flash (и другие плагины) только для доверенных доменов, выбранных вами (например: сайт банковского обслуживания). Белый список, основанный на принципе упреждающего блокирования, позволяет предотвратить использование уязвимостей (известных и ещё не известных!) без потери функциональности… Эксперты соглашаются: Firefox действительно безопаснее с NoScript :-)",
+        "message": "Максимальная защита вашего браузера: для предотвращения использования уязвимостей NoScript разрешает активное содержимое только для доверенных доменов, выбранных вами.",
         "description": ""
     },
     "Donate": {
@@ -236,7 +240,7 @@
         "description": ""
     },
     "HighContrast": {
-        "message": "Высококонтрастная тема",
+        "message": "Высокий контраст",
         "description": ""
     },
     "httpsOnly": {
@@ -353,6 +357,10 @@
     },
     "OptFilterXPost": {
         "message": "Заменять межсайтовые POST-запросы на GET-запросы без данных",
+        "description": ""
+    },
+    "OptOverrideTorBrowserPolicy": {
+        "message": "Переопределить заданный уровень безопасности Tor Browser’а",
         "description": ""
     },
     "Options": {
@@ -516,7 +524,7 @@
         "description": ""
     },
     "TempTrustPage": {
-        "message": "Установить преднастройку \nВременно ДОВЕРЕННЫЕ \nдля всех элементов страницы",
+        "message": "Установить  «Врем. ДОВЕРЕННЫЕ» \nдля всех элементов страницы",
         "description": ""
     },
     "TempTrustPage_accesskey": {
@@ -588,7 +596,7 @@
         "description": ""
     },
     "WebAddress": {
-        "message": "Адрес веб-сайта:",
+        "message": "Найти или добавить сайт:",
         "description": ""
     },
     "WebAddress_accesskey": {
@@ -741,6 +749,10 @@
     },
     "cap_fetch": {
         "message": "fetch",
+        "description": ""
+    },
+    "cap_ping": {
+        "message": "пинг",
         "description": ""
     },
     "cap_other": {

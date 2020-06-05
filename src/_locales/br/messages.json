@@ -99,6 +99,10 @@
         "message": "Aotreadurioù e skaleriad an teul uhel war skriptoù 3tredeoù",
         "description": ""
     },
+    "CascadeRestrictions": {
+        "message": "Cascade top document's restrictions to subdocuments",
+        "description": ""
+    },
     "ClearClickDescription": {
         "message": "NoScript en deus dastapet un etregwerad logodenn pe glavier gant un elfenn peuz-goachet. Klikit war ar skeudenn dindan evit merdeiñ etre ar stumm stanket hag ar stumm sklaer.",
         "description": ""
@@ -353,6 +357,10 @@
     },
     "OptFilterXPost": {
         "message": "Treuzfurmiñ ar rekedoù POST dreuz-lec'hiennoù e-barzh rekedoù GET diroadenn",
+        "description": ""
+    },
+    "OptOverrideTorBrowserPolicy": {
+        "message": "Erlec'hiañ rak-arventennoù live surentez ar Merdeer Tor",
         "description": ""
     },
     "Options": {

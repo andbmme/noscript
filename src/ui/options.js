@@ -8,9 +8,9 @@
   let version = browser.runtime.getManifest().version;
   document.querySelector("#version").textContent = _("Version", version);
   // simple general options
-  
+
   let opt = UI.wireOption;
-  
+
   opt("global", o => {
     if (o) {
       policy.enforced = !o.checked;
@@ -32,16 +32,20 @@
     return policy.autoAllowTop;
   });
 
+  opt("cascadeRestrictions");
+
   opt("xss");
+
+  opt("overrideTorBrowserPolicy");
+
   {
-    let button = document.querySelector("#btn-reset");
-    button.onclick = async () => {
+    document.querySelector("#btn-reset").addEventListener("click", async () => {
       if (confirm(_("reset_warning"))) {
         policy = new Policy();
         await UI.updateSettings({policy, local: null, sync: null, xssUserChoices: {}});
         window.location.reload();
       }
-    }
+    });
 
     let fileInput = document.querySelector("#file-import");
     fileInput.onchange = () => {
@@ -57,14 +61,21 @@
       fr.readAsText(fileInput.files[0]);
     }
 
-    button = document.querySelector("#btn-import");
-    button.onclick = () => fileInput.click();
+    document.querySelector("#btn-import").addEventListener("click", async e => {
+      fileInput.focus();
+      fileInput.click();
+      e.target.focus();
+    });
 
     document.querySelector("#btn-export").addEventListener("click", async e => {
       let button = e.target;
       button.disabled = true;
       let settings = await UI.exportSettings();
-      let f = document.createElement("iframe");
+      let id = "noscriptExportFrame";
+      let f = document.getElementById(id);
+      if (f) f.remove();
+      f = document.createElement("iframe");
+      f.id = id;
       f.srcdoc = `<a download="noscript_data.txt" target="_blank">NoScript Export</a>`;
       f.style.position = "fixed";
       f.style.top = "-999px";
@@ -77,7 +88,6 @@
         }));
         a.click();
         setTimeout(() => {
-          f.remove();
           button.disabled = false;
         }, 1000);
 
@@ -96,7 +106,7 @@
     }
     let button = document.querySelector("#btn-delete-xss-choices");
     let choices = UI.xssUserChoices;
-    button.disabled = Object.keys(choices).length === 0;
+    button.disabled = !choices || Object.keys(choices).length === 0;
     button.onclick = () => {
       UI.updateSettings({
         xssUserChoices: {}

@@ -4,7 +4,6 @@
   let hider = toolbar.querySelector(".hider");
 
   if (UI.local.toolbarLayout) {
-    debug(uneval(UI.local.toolbarLayout));
     let {left, right, hidden} = UI.local.toolbarLayout;
     for (let id of left) {
       toolbar.insertBefore(document.getElementById(id), hider);
@@ -87,7 +86,7 @@
       }
       UI.local.toolbarLayout = {
         left, right,
-        hidden: Array.map(document.querySelectorAll("#top > .hider > .icon"), el => el.id),
+        hidden: Array.from(document.querySelectorAll("#top > .hider > .icon")).map(el => el.id),
       };
 
       debug("%o", UI.local);

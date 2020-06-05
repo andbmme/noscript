@@ -12,8 +12,11 @@ var UI = (() => {
       "CUSTOM": "Custom",
     },
 
-    async init(tabId = -1) {
-      UI.tabId = tabId;
+    async init(tab) {
+      UI.tabId = tab ? tab.id : -1;
+      document.documentElement.classList.toggle("incognito",
+        UI.incognito = tab && tab.incognito
+      );
       let scripts = [
         "/ui/ui.css",
         "/lib/Messages.js",
@@ -21,7 +24,7 @@ var UI = (() => {
         "/lib/tld.js",
         "/common/Policy.js",
       ];
-      this.mobile = !("windows" in browser);
+      this.mobile = UA.mobile;
       if (this.mobile) {
         document.documentElement.classList.toggle("mobile", true);
         scripts.push("/lib/fastclick.js");
@@ -31,6 +34,7 @@ var UI = (() => {
       let inited = new Promise(resolve => {
         Messages.addHandler({
           async settings(m) {
+            if (!UI.tabId === m.tabId) return;
             UI.policy = new Policy(m.policy);
             UI.snapshot = UI.policy.snapshot;
             UI.seen = m.seen;
@@ -38,8 +42,15 @@ var UI = (() => {
             UI.xssUserChoices = m.xssUserChoices;
             UI.local = m.local;
             UI.sync = m.sync;
-            if (UI.local && !UI.local.debug) {
-              debug = () => {}; // be quiet!
+            UI.forceIncognito = UI.incognito && !UI.sync.overrideTorBrowserPolicy;
+            if (UI.local) {
+              if (!UI.local.debug) {
+                debug = () => {}; // be quiet!
+              }
+              document.documentElement.classList.toggle("tor", !!UI.local.isTorBrowser);
+              if (UI.local.isTorBrowser) {
+                Sites.onionSecure = true;
+              }
             }
             resolve();
             if (UI.onSettings) UI.onSettings();
@@ -159,7 +170,7 @@ var UI = (() => {
         canary.style.display = "none";
         document.body.appendChild(canary);
         UI.highContrast = window.getComputedStyle(canary).backgroundImage === "none";
-        canary.parentNode.removeChild(canary);
+        canary.remove();
       }
       return UI.highContrast;
     }
@@ -191,14 +202,13 @@ var UI = (() => {
     <td class="presets">
     <span class="preset">
       <input id="preset" class="preset" type="radio" name="preset"><label for="preset" class="preset">PRESET</label>
-      <button class="options tiny">⚙</button>
-      <input id="temp" class="temp" type="checkbox"><label for="temp">Temporary</input>
+      <input tabindex="-1" id="temp" class="temp" type="checkbox"><label for="temp">Temporary</label></input>
     </span>
     </td>
 
     <td class="url" data-key="secure">
-    <input class="https-only" id="https-only" type="checkbox"><label for="https-only" class="https-only"></label>
-    <span class="full-address">
+    <input tabindex="0" class="https-only" id="https-only" type="checkbox"><label for="https-only" class="https-only"></label>
+    <span tabindex="0" class="full-address" aria-role="button">
     <span class="protocol">https://</span><span class="sub">www.</span><span class="domain">noscript.net</span><span class="path"></span>
     </span>
     </td>
@@ -206,7 +216,7 @@ var UI = (() => {
 
 
     </tr>
-    <tr class="customizer">
+    <tr tabindex="-1" class="customizer">
     <td colspan="2">
     <div class="customizer-controls">
     <fieldset><legend></legend>
@@ -230,6 +240,7 @@ var UI = (() => {
     "UNTRUSTED": false,
     "CUSTOM": true,
   };
+  const INCOGNITO_PRESETS = ["DEFAULT", "T_TRUSTED", "CUSTOM"];
 
   UI.Sites = class {
     constructor(parentNode, presets = DEF_PRESETS) {
@@ -248,28 +259,26 @@ var UI = (() => {
       // PRESETS
       {
         let presets = row.querySelector(".presets");
-        let [span, input, label, options] = presets.querySelectorAll("span.preset, input.preset, label.preset, .options");
+        let [span, input, label] = presets.querySelectorAll("span.preset, input.preset, label.preset");
         span.remove();
-        options.title = _("Options");
         for (let [preset, customizable] of Object.entries(this.presets)) {
           let messageKey = UI.presets[preset];
           input.value = preset;
           label.textContent = label.title = input.title = _(messageKey);
+          input.disabled = UI.forceIncognito && !INCOGNITO_PRESETS.includes(preset);
           let clone = span.cloneNode(true);
           clone.classList.add(preset);
           let temp = clone.querySelector(".temp");
           if (TEMP_PRESETS.includes(preset)) {
             temp.title = _("allowTemp", `(${label.title.toUpperCase()})`);
             temp.nextElementSibling.textContent = _("allowTemp", ""); // label;
+            temp.disabled = UI.forceIncognito;
           } else {
             temp.nextElementSibling.remove();
             temp.remove();
           }
-          if (customizable) {
-            clone.querySelector(".options").remove();
-          }
-          presets.appendChild(clone);
 
+          presets.appendChild(clone);
         }
 
         if (!UI.mobile) {
@@ -297,7 +306,7 @@ var UI = (() => {
           capInput.id = `capability-${capability}-${idSuffix}`
           capLabel.setAttribute("for", capInput.id);
           capInput.value = capability;
-          capInput.title = capLabel.textContent = _(`cap_${capability}`);
+          capInput.title = capLabel.textContent = _(`cap_${capability}`) || capability;
           let clone = capParent.appendChild(cap.cloneNode(true));
           clone.classList.add(capability);
         }
@@ -313,51 +322,52 @@ var UI = (() => {
       sizer.id = "presets-sizer";
       sizer.appendChild(presets.cloneNode(true));
       document.body.appendChild(sizer);
-      setTimeout(async () => {
-        let presetWidth = sizer.querySelector("input.preset").offsetWidth;
-        let labelWidth = 0;
-        for (let l of sizer.querySelectorAll("label.preset")) {
-          let lw = l.offsetWidth;
-          debug("lw", l.textContent, lw);
-          if (lw > labelWidth) labelWidth = lw;
-        }
+      let presetWidth = sizer.querySelector("input.preset").offsetWidth;
+      let labelWidth = 0;
+      for (let l of sizer.querySelectorAll("label.preset")) {
+        let lw = l.offsetWidth;
+        debug("lw", l.textContent, lw);
+        if (lw > labelWidth) labelWidth = lw;
+      }
 
-        debug(`Preset: %s Label: %s`, presetWidth, labelWidth);
-        labelWidth += 16;
-        if (presetWidth < labelWidth) {
-          for (let ss of document.styleSheets) {
-            if (ss.href.endsWith("/ui.css")) {
-              for (let r of ss.cssRules) {
-                if (/input\.preset:checked.*min-width:/.test(r.cssText)) {
-                  r.style.minWidth = (labelWidth) + "px";
-                  break;
-                }
+      debug(`Preset: %s Label: %s`, presetWidth, labelWidth);
+      labelWidth += 16;
+      if (presetWidth < labelWidth) {
+        for (let ss of document.styleSheets) {
+          if (ss.href.endsWith("/ui.css")) {
+            for (let r of ss.cssRules) {
+              if (/input\.preset:checked.*min-width:/.test(r.cssText)) {
+                r.style.minWidth = (labelWidth) + "px";
+                break;
               }
             }
           }
         }
+      }
 
-        sizer.remove();
-
-      }, 100);
+      sizer.remove();
       UI.Sites.correctSize = () => {}; // just once, please!
     }
 
     allSiteRows() {
       return this.table.querySelectorAll("tr.site");
     }
+
+    anyPermissionsChanged() {
+      return Array.from(this.allSiteRows()).some(row => row.permissionsChanged);
+    }
+
     clear() {
       debug("Clearing list", this.table);
-
       this.template = document.createElement("template");
       this.template.innerHTML = TEMPLATE;
       this.fragment = this.template.content;
       this.table = this.fragment.querySelector("table.sites");
       this.rowTemplate = this.initRow();
-
       for (let r of this.allSiteRows()) {
-        r.parentNode.removeChild(r);
+        r.remove();
       }
+
       this.customize(null);
       this.sitesCount = 0;
     }
@@ -372,7 +382,7 @@ var UI = (() => {
       let customizer = target.closest(".customizer");
       let row = customizer ? customizer.parentNode.querySelector("tr.customizing") : target.closest("tr.site");
       if (!row) return;
-      row.temp2perm = false;
+
       let isTemp = target.matches("input.temp");
       let preset = target.matches("input.preset") ? target
         : customizer || isTemp ? row.querySelector("input.preset:checked")
@@ -392,28 +402,32 @@ var UI = (() => {
         return;
       }
 
-      let policy = UI.policy;
+
       let {siteMatch, contextMatch, perms} = row;
-      let presetValue = preset.value;
-      let policyPreset = presetValue.startsWith("T_") ? policy[presetValue.substring(2)].tempTwin : policy[presetValue];
-
-      if (policyPreset) {
-        if (row.perms !== policyPreset) {
-          row.temp2perm = row.perms && policyPreset.tempTwin === row.perms;
-          row.perms = policyPreset;
-        }
-      }
-
 
       let isCap = customizer && target.matches(".cap");
       let tempToggle = preset.parentNode.querySelector("input.temp");
 
       if (ev.type === "change") {
+        row.permissionsChanged = false;
+        if (!row._originalPerms) {
+          row._originalPerms = row.perms.clone();
+        }
+        let policy = UI.policy;
+        let presetValue = preset.value;
+        let policyPreset = presetValue.startsWith("T_") ? policy[presetValue.substring(2)].tempTwin : policy[presetValue];
+
+        if (policyPreset && row.perms !== policyPreset) {
+          row.perms = policyPreset;
+        }
         if (preset.checked) {
           row.dataset.preset = preset.value;
         }
         if (isCap) {
           perms.set(target.value, target.checked);
+          if (UI.forceIncognito) {
+            row.perms.temp = tempToggle.checked = true;
+          }
         } else if (policyPreset) {
           if (tempToggle && tempToggle.checked) {
             policyPreset = policyPreset.tempTwin;
@@ -430,8 +444,9 @@ var UI = (() => {
 
         } else if (preset.value === "CUSTOM") {
           if (isTemp) {
-            row.perms.temp = target.checked;
+            row.perms.temp = target.checked || UI.forceIncognito;
           } else {
+            if (UI.forceIncognito) row.perms.temp = true;
             let temp = row.perms.temp;
             tempToggle.checked = temp;
             let perms = row._customPerms ||
@@ -441,6 +456,7 @@ var UI = (() => {
             this.customize(perms, preset, row);
           }
         }
+        row.permissionsChanged = !row.perms.sameAs(row._originalPerms);
         fireOnChange(this, row);
       } else if (!(isCap || isTemp) && ev.type === "click") {
           this.customize(row.perms, preset, row);
@@ -460,12 +476,15 @@ var UI = (() => {
         this.presets[preset.value] &&
         preset !== customizer._preset)) {
            delete customizer._preset;
+           customizer.onkeydown = null;
+           customizer.remove();
            return;
       }
 
       customizer._preset = preset;
       row.classList.toggle("customizing", true);
       let immutable = Permissions.IMMUTABLE[preset.value] || {};
+      let lastInput = null;
       for (let input of customizer.querySelectorAll("input")) {
         let type = input.value;
         if (type in immutable) {
@@ -474,23 +493,52 @@ var UI = (() => {
         } else {
           input.checked = perms.allowing(type);
           input.disabled = false;
+          lastInput = input;
         }
         input.parentNode.classList.toggle("needed", this.siteNeeds(row._site, type));
-        row.parentNode.insertBefore(customizer, row.nextElementSibling);
-        customizer.classList.toggle("closed", false);
-        customizer.onkeydown = e => {
-          switch(e.keyCode) {
-            case 38:
-            case 8:
-            e.preventDefault();
+      }
+
+      row.parentNode.insertBefore(customizer, row.nextElementSibling);
+      customizer.classList.toggle("closed", false);
+      let temp = preset.parentNode.querySelector("input.temp");
+      customizer.onkeydown = e => {
+        if (e.shiftKey) return true;
+        switch(e.code) {
+          case "Tab":
+            if (document.activeElement === lastInput) {
+              if (temp) {
+                temp.tabIndex = "0";
+                temp.onblur = () => this.customize(null);
+                setTimeout(() => temp.tabIndex = "-1", 50);
+                preset.focus();
+              }
+
+            }
+            return true;
+          case "ArrowLeft":
+          case "ArrowRight":
+          case "ArrowUp":
             this.onkeydown = null;
             this.customize(null);
             preset.focus();
+            if (!temp) return true;
+            switch(e.code.substring(5)) {
+              case "Left":
+                return false;
+              case "Right":
+                temp.focus();
+            }
+            e.preventDefault();
+            e.stopPropagation();
             return false;
+          case "KeyT":
+          {
+            let temp = preset.parentNode.querySelector("input.temp");
+            if (temp) temp.checked = !temp.checked || UI.forceIncognito;
           }
         }
-        window.setTimeout(() => customizer.querySelector("input").focus(), 50);
       }
+      window.setTimeout(() => customizer.querySelector("input:not(:disabled)").focus(), 50);
     }
 
     render(sites = this.sites, sorter = this.sorter) {
@@ -502,11 +550,93 @@ var UI = (() => {
       let root = parentNode.querySelector("table.sites");
       debug("Wiring", root);
       if (!root.wiredBy) {
+        root.addEventListener("keydown", e => this._keyNavHandler(e), true);
+        root.addEventListener("keyup", e => {
+          // we use a keyup listener to open the customizer from other presets
+          // because space repetion may lead to unintendedly "click" on the
+          // first cap checkbox once focused from keydown
+          switch(e.code) {
+            case "Space": {
+              let focused = document.activeElement;
+              if (focused.matches("tr .preset")) {
+                focused.closest("tr").querySelector(".preset[value='CUSTOM']").click();
+                e.preventDefault();
+              }
+            }
+          }
+        }, true);
         root.addEventListener("click", this, true);
         root.addEventListener("change", this, true);
         root.wiredBy = this;
       }
       return root;
+    }
+
+    _keyNavHandler(e) {
+      let focused = document.activeElement;
+      if (!focused) return;
+      let row = focused.closest("tr");
+      if (!row || row.matches(".customizer")) return;
+      let dir = "next";
+      let newRow;
+      let mappedPreset = ({
+        "+": "TRUSTED",
+        "-": "UNTRUSTED",
+        "0": "DEFAULT",
+        "t": "T_TRUSTED",
+        "c": "CUSTOM"
+      })[e.key];
+
+      if (mappedPreset) {
+        let p = row.querySelector(`.preset[value='${mappedPreset}']`);
+        if (p) {
+          p.focus();
+          p.click();
+          e.preventDefault();
+        }
+        return;
+      }
+
+      switch(e.code) {
+        case "Delete":
+        case "Backspace":
+          row.querySelector(".preset[value='DEFAULT']").click();
+          e.preventDefault();
+          break;
+        case "Enter":
+        case "Space":
+          if (focused.matches(".full-address")) {
+            UI.openSiteInfo(row.domain);
+          }
+          break;
+        case "Home":
+          newRow = row;
+        case "ArrowUp":
+          dir = "previous";
+        case "ArrowDown":
+          if (!newRow) {
+            this.customize(null);
+            let prop = `${dir}ElementSibling`;
+            newRow =  row[prop];
+            if (!(newRow && newRow.matches("tr"))) newRow = row;
+          }
+
+          if (newRow === row) {
+            let topButton = document.querySelector("#top > button");
+            if (topButton) topButton.focus();
+          } else {
+            newRow.querySelector("input.preset:checked").focus();
+          }
+          e.preventDefault();
+          e.stopPropagation();
+          break;
+        case "KeyS":
+          row.querySelector(".https-only").click();
+          break;
+        case "KeyI":
+          UI.openSiteInfo(row.domain);
+          break;
+      }
     }
 
     _populate(sites, sorter) {
@@ -528,7 +658,6 @@ var UI = (() => {
         this.sites = sites;
       }
       this.sort(sorter);
-      window.setTimeout(() => this.focus(), 50);
     }
 
     focus() {
@@ -566,7 +695,6 @@ var UI = (() => {
       }
       this.clear();
       for (let row of rows) this.table.appendChild(row);
-      this.table.appendChild(this.rowTemplate._customizer);
     }
 
     sorter(a, b) {
@@ -624,10 +752,11 @@ var UI = (() => {
         siteMatch = site;
       }
       let secure = Sites.isSecureDomainKey(siteMatch);
+      let isOnion = UI.local.isTorBrowser && hostname && hostname.endsWith(".onion");
       let keyStyle = secure ? "secure"
         : !domain || /^\w+:/.test(siteMatch) ?
-            (url.protocol === "https:" ? "full" : "unsafe")
-          : domain === hostname ? "domain" : "host";
+            (url.protocol === "https:" || isOnion ? "full" : "unsafe")
+          : isOnion ? "secure" : domain === hostname ? "domain" : "host";
 
       let urlContainer = row.querySelector(".url");
       urlContainer.dataset.key = keyStyle;
@@ -732,6 +861,7 @@ var UI = (() => {
             temp.checked = perms.temp;
           }
         }
+        preset.disabled = false;
       }
       return row;
     }
@@ -741,23 +871,29 @@ var UI = (() => {
     }
 
     toggleSecure(row, secure = !!row.querySelector("https-only:checked")) {
-      this.customize(null);
       let site = row.siteMatch;
       site = site.replace(/^https?:/, secure ? "https:" : "http:");
       if (site === row.siteMatch) {
         site = Sites.toggleSecureDomainKey(site, secure);
       }
       if (site !== row.siteMatch) {
+        this.customize(null);
+        let focused = document.activeElement;
         let {policy} = UI;
         policy.set(row.siteMatch, policy.DEFAULT);
         policy.set(site, row.perms);
         for(let r of this.allSiteRows()) {
           if (r !== row && r.siteMatch === site && r.contextMatch === row.contextMatch) {
-            r.parentNode.removeChild(r);
+            r.remove();
           }
         }
         let newRow = this.createSiteRow(site, site, row.perms, row.contextMatch, row.sitesCount);
         row.parentNode.replaceChild(newRow, row);
+        if (focused) {
+          let selector = focused.matches(".preset[value]") ?
+              `.preset[value="${focused.value}"]` : ".https-only";
+          newRow.querySelector(selector).focus();
+        }
       }
     }
 

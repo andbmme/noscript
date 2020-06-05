@@ -99,6 +99,10 @@
         "message": "Cascade top document's permissions to 3rd party scripts",
         "description": ""
     },
+    "CascadeRestrictions": {
+        "message": "Cascade top document's restrictions to subdocuments",
+        "description": ""
+    },
     "ClearClickDescription": {
         "message": "Το NoScript παρεμπόδισε μια αλληλεπίδραση ποντικιού ή πληκτρολογίου με κάποιο εν μέρει κρυμμένο στοιχείο. Πατήστε στην παρακάτω εικόνα για εναλλαγή μεταξύ της κρυμμένης και της εμφανής έκδοσης.",
         "description": ""
@@ -353,6 +357,10 @@
     },
     "OptFilterXPost": {
         "message": "Turn cross-site POST requests into data-less GET requests",
+        "description": ""
+    },
+    "OptOverrideTorBrowserPolicy": {
+        "message": "Override Tor Browser's Security Level preset",
         "description": ""
     },
     "Options": {

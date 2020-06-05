@@ -16,7 +16,7 @@ function deferWebTraffic(promiseToWaitFor, next) {
     try {
       browser.tabs.executeScript(tabId, {
         runAt: "document_start",
-        code: "window.location.reload(false)"
+        code: "if (performance.now() < 60000) window.location.reload(false)"
       });
       debug("Reloading tab", tabId);
     } catch (e) {
@@ -31,7 +31,7 @@ function deferWebTraffic(promiseToWaitFor, next) {
       if (type === "main_frame") {
         seenTabs.add(tabId);
       } else if (documentUrl) {
-        if (frameId !== 0) {
+        if (frameId !== 0 && request.frameAncestors) {
           documentUrl = request.frameAncestors.pop().url;
         }
         reloadTab(tabId);

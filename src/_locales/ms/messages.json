@@ -68,7 +68,7 @@
         "description": ""
     },
     "AutoReload": {
-        "message": "Automatically reload affected pages when permissions change",
+        "message": "Muat semula halaman berjangkit secara automatik bila keizinan berubah",
         "description": ""
     },
     "AutoReload_currentTab": {
@@ -96,19 +96,23 @@
         "description": ""
     },
     "CascadePermissions": {
-        "message": "Cascade top document's permissions to 3rd party scripts",
+        "message": "Lata keizinan dokumen teratas kepada skrip pihak ke-3",
+        "description": ""
+    },
+    "CascadeRestrictions": {
+        "message": "Lata sekatan dokumen teratas ke subdokumen",
         "description": ""
     },
     "ClearClickDescription": {
-        "message": "NoScript intercepted a mouse or keyboard interaction with a partially hidden element. Click on the image below to cycle between the obstructed and the clear version.",
+        "message": "NoScript menyekat interaksi tetikus atau papan kekunci dengan elemen separa-sembunyi. Klik pada imej di bawah untuk kitar antara versi kabur dengan yang jelas.",
         "description": ""
     },
     "ClearClickHeader": {
-        "message": "Potential Clickjacking / UI Redressing Attempt!",
+        "message": "Percubaan Godaman Klik / Pembetulan UI yang berpotensi!",
         "description": ""
     },
     "ClearClickOpt": {
-        "message": "ClearClick protection on pages…",
+        "message": "Perlindungan ClearClick pada halaman...",
         "description": ""
     },
     "ClearClickReport": {
@@ -124,7 +128,7 @@
         "description": ""
     },
     "ClearClickTitle": {
-        "message": "ClearClick Warning",
+        "message": "Amaran ClearClick",
         "description": ""
     },
     "Close": {
@@ -132,7 +136,7 @@
         "description": ""
     },
     "CollapseBlockedObjects": {
-        "message": "Collapse blocked objects",
+        "message": "Runtuhkan objek disekat",
         "description": ""
     },
     "ConfirmUnblock": {
@@ -164,7 +168,7 @@
         "description": ""
     },
     "Description": {
-        "message": "Extra protection for your Firefox: NoScript allows JavaScript, Flash (and other plugins) only for trusted domains of your choice (e.g. your home-banking web site). This whitelist based pre-emptive blocking approach prevents exploitation of security vulnerabilities (known and even unknown!) with no loss of functionality… Experts will agree: Firefox is really safer with NoScript :-)",
+        "message": "Perlindungan maksimum untuk pelayar anda: NoScript hanya membolehkan kandungan aktif untuk domain yang dipercayai berdasarkan pilihan anda untuk menghindari eksploitasi.",
         "description": ""
     },
     "Donate": {
@@ -308,7 +312,7 @@
         "description": ""
     },
     "NoUntrustedPlaceholder": {
-        "message": "No placeholder for objects coming from sites marked as untrusted",
+        "message": "Tiada sandaran bagi objek-objek yang masuk daripada laman yang telah ditanda tidak dipercayai",
         "description": ""
     },
     "Notifications": {
@@ -352,7 +356,11 @@
         "description": ""
     },
     "OptFilterXPost": {
-        "message": "Turn cross-site POST requests into data-less GET requests",
+        "message": "Ubah permohonan HANTARAN laman-silang menjadi pemohonan GET kurang-data",
+        "description": ""
+    },
+    "OptOverrideTorBrowserPolicy": {
+        "message": "Batalkan praset Aras Keselamatan Pelayar Tor",
         "description": ""
     },
     "Options": {
@@ -380,7 +388,7 @@
         "description": ""
     },
     "PermissionsText": {
-        "message": "You can specify which web sites are allowed to execute scripts. Type the address or the domain (e.g. \"http://www.site.com\" or \"site.com\") of the site you want to allow and then click Allow.",
+        "message": "Anda boleh tentukan laman sesawang manakah boleh melakukan skrip. Taip alamat atau domain (seperti \"http://www.site.com\" atau \"site.com\") bagi laman yang hendak diberi keizinan, kemudian klik Benarkan.",
         "description": ""
     },
     "Plugins": {
@@ -452,7 +460,7 @@
         "description": ""
     },
     "RevokeTemp": {
-        "message": "Revoke Temporary Permissions",
+        "message": "Tarik Balik Keizinan Sementara",
         "description": ""
     },
     "RevokeTemp_accesskey": {
@@ -500,7 +508,7 @@
         "description": ""
     },
     "ShowCountBadge": {
-        "message": "Display blocked items count badge",
+        "message": "Papar lencana kiraan item disekat",
         "description": ""
     },
     "SitePermissions": {
@@ -612,7 +620,7 @@
         "description": ""
     },
     "XSS_promptMessage": {
-        "message": "NoScript detected a potential Cross-Site Scripting attack\nfrom $1 to $2.\nSuspicious data:\n$3",
+        "message": "NoScript mengesan satu potensi serangan Penskripan Rentas-Laman\ndaripada $1 kepada $2.\nData mencurigakan:\n$3",
         "description": ""
     },
     "XSS_optBlock": {
@@ -628,7 +636,7 @@
         "description": ""
     },
     "XSS_optAlwaysAllow": {
-        "message": "Always allow document requests from $1 to $2",
+        "message": "Sentiasa benarkan permohonan dokumen dari $1 hingga $2",
         "description": ""
     },
     "XSS_optAlwaysBlock": {
@@ -648,7 +656,7 @@
         "description": ""
     },
     "XssExceptions_description": {
-        "message": "Destinations matching these regular expressions will NOT be protected against XSS.",
+        "message": "Padanan destinasi bagi ungkapan nalar ini TIDAK akan dilindungi dengan XSS.",
         "description": ""
     },
     "XssFaq": {
@@ -704,7 +712,7 @@
         "description": ""
     },
     "bookmarkSync_confirm": {
-        "message": "NoScript has found a configuration bookmark seemingly saved on\n$1.\nDo you really want to overwrite your local NoScript configuration with this bookmark's content?",
+        "message": "NoScript telah menemnui tanda buku konfigurasi yang telah disimpan pada\n$1.\nAnda pasti mahu menulis-ganti konfigurasi NoScript setempat anda dengan kandungan tanda buku ini?",
         "description": ""
     },
     "bookmarkSync_message": {
@@ -804,11 +812,11 @@
         "description": ""
     },
     "privilegedPage": {
-        "message": "This is a privileged page, whose permissions cannot be configured.",
+        "message": "Ini adalah halaman sulit, yang mana keizinan tidak boleh dikonfigur.",
         "description": ""
     },
     "incompatibleOptions": {
-        "message": "\"$1\"\nis incompatible with \"$2\".\nDo you want to enable the former and disable the latter?",
+        "message": "\"$1\"\ntidak serasi dengan \"$2\".\nAnda mahu benarkan yang terdahulu dan lumpuhkan yang baharu?",
         "description": ""
     },
     "incompatibleOptions_title": {
@@ -832,7 +840,7 @@
         "description": ""
     },
     "metaRefresh_notify": {
-        "message": "NoScript blocked a <META> redirection inside a <NOSCRIPT> element: $1 in $2 seconds.",
+        "message": "NoScript menyekat satu unsur <META> penghalaan semula <NOSCRIPT>: $1 dalam tempoh $2 saat.",
         "description": ""
     },
     "Reload": {
@@ -864,7 +872,7 @@
         "description": ""
     },
     "siteInfo_confirm": {
-        "message": "You're about to ask for information about the \"$1\" site\nby submitting a query to $2.\nDo you want to continue?",
+        "message": "Anda akan ditanya maklumat berkenaan laman \"$1\"\ndengan menyerahkan pertanyaan kepada $2.\nAnda mahu teruskan?",
         "description": ""
     },
     "siteInfo_tooltip": {
@@ -876,7 +884,7 @@
         "description": ""
     },
     "unsafeReload_warning": {
-        "message": "UNSAFELY reloading a suspicious\n\n$1 [$2]\n\nFROM [$3]\n\nNoScript will NOT protect this request!\n",
+        "message": "Memuatkan semula secara BERBAHAYA\n\n$1 [$2]\n\nDARIPADA [$3]\n\nNoScript TIDAK melindungi permintaan ini!\n",
         "description": ""
     },
     "untrustedOrigin": {

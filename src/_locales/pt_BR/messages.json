@@ -99,6 +99,10 @@
         "message": "Permissões do documento superior em cascata para scripts de terceiros",
         "description": ""
     },
+    "CascadeRestrictions": {
+        "message": "Cascade top document's restrictions to subdocuments",
+        "description": ""
+    },
     "ClearClickDescription": {
         "message": "NoScript interceptou uma interação do mouse ou teclado com um elemento parcialmente oculto. Clique na imagem abaixo para alternar entre a versão obstruída e a limpa.",
         "description": ""
@@ -236,7 +240,7 @@
         "description": ""
     },
     "HighContrast": {
-        "message": "High contrast appearance",
+        "message": "High contrast",
         "description": ""
     },
     "httpsOnly": {
@@ -353,6 +357,10 @@
     },
     "OptFilterXPost": {
         "message": "Transformar solicitações POST entre sites em solicitações GET sem dados",
+        "description": ""
+    },
+    "OptOverrideTorBrowserPolicy": {
+        "message": "Override Tor Browser's Security Level preset",
         "description": ""
     },
     "Options": {

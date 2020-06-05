@@ -84,7 +84,7 @@
         "description": ""
     },
     "BlockedObjects": {
-        "message": "Von NoScript blockierte Objekte",
+        "message": "Von NoScript blockierte Objekte",
         "description": ""
     },
     "BookmarkSync": {
@@ -97,6 +97,10 @@
     },
     "CascadePermissions": {
         "message": "Berechtigungen des obersten Dokuments für Scripte von Drittanbietern übernehmen",
+        "description": ""
+    },
+    "CascadeRestrictions": {
+        "message": "Einschränkungen des obersten Dokuments für Unterdokumente übernehmen",
         "description": ""
     },
     "ClearClickDescription": {
@@ -164,7 +168,7 @@
         "description": ""
     },
     "Description": {
-        "message": "Zusätzliche Sicherheit für Ihren Firefox: Mit NoScript können Sie JavaScript, Flash, Java und andere ausführbare Inhalte bloß auf vertrauenswürdigen Domains Ihrer Wahl zulassen, z.B. beim Online-Banking. Dieser whitelist-basierte präventive Ansatz verhindert das Ausnutzen von (bekannten und unbekannten!) Sicherheitslücken ohne Verlust an Funktionalität… Experten sind sich einig: Firefox wird wirklich noch sicherer mithilfe von NoScript ;-)",
+        "message": "Maximaler Schutz für Ihren Browser: NoScript lässt aktive Inhalte nur für vertrauenswürdige Domains Ihrer Wahl zu, um das Ausnutzen von Sicherheitslücken zu verhindern.",
         "description": ""
     },
     "Donate": {
@@ -236,7 +240,7 @@
         "description": ""
     },
     "HighContrast": {
-        "message": "Modus mit hohem Kontrast",
+        "message": "Hoher Kontrast",
         "description": ""
     },
     "httpsOnly": {
@@ -353,6 +357,10 @@
     },
     "OptFilterXPost": {
         "message": "Webseitenübergreifende POST-Anfragen in datenlose GET-Anfragen umwandeln",
+        "description": ""
+    },
+    "OptOverrideTorBrowserPolicy": {
+        "message": "Die Sicherheitsstufe des Tor Browsers übersteuern",
         "description": ""
     },
     "Options": {
@@ -741,6 +749,10 @@
     },
     "cap_fetch": {
         "message": "fetch",
+        "description": ""
+    },
+    "cap_ping": {
+        "message": "ping",
         "description": ""
     },
     "cap_other": {

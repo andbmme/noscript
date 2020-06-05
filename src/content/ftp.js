@@ -1,4 +1,4 @@
-(() => {
+if (UA.isMozilla) (() => {
   // see https://dxr.mozilla.org/mozilla-central/rev/d03b538b6b417ba892d0a92fd693945b741246e1/netwerk/streamconv/converters/nsIndexedToHTML.cpp#381
   'use strict';
   var gTable, gOrderBy, gTBody, gRows, gUI_showHidden;
@@ -9,7 +9,7 @@
     ) {
       return;
     }
-    
+
     gTable = document.getElementsByTagName("table")[0];
     gTBody = gTable.tBodies[0];
     if (gTBody.rows.length < 2)
@@ -31,7 +31,7 @@
       headCells[i].addEventListener("click", rowAction(i), true);
     }
     if (gUI_showHidden) {
-      gRows = Array.slice(gTBody.rows);
+      gRows = Array.from(gTBody.rows);
       hiddenObjects = gRows.some(row => row.className == "hidden-object");
     }
     gTable.setAttribute("order", "");
@@ -60,7 +60,7 @@
   }
   function orderBy(column) {
     if (!gRows)
-      gRows = Array.slice(gTBody.rows);
+      gRows = Array.from(gTBody.rows);
     var order;
     if (gOrderBy == column) {
       order = gTable.getAttribute("order") == "asc" ? "desc" : "asc";

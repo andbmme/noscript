@@ -32,7 +32,7 @@
         "description": ""
     },
     "AllowClipboard": {
-        "message": "התר העתקה והדבקה של מלל עשיר מלוח גזירה חיצוני",
+        "message": "התר העתקה והדבקה של טקסט עשיר מלוח גזירה חיצוני",
         "description": ""
     },
     "AllowLocalLinks": {
@@ -84,7 +84,7 @@
         "description": ""
     },
     "BlockedObjects": {
-        "message": "עצמים חסומים של NoScript",
+        "message": "NoScript חסם עצמים",
         "description": ""
     },
     "BookmarkSync": {
@@ -97,6 +97,10 @@
     },
     "CascadePermissions": {
         "message": "הדרג הרשאות ראש של מסמכים אל תסריטי צד שלישי",
+        "description": ""
+    },
+    "CascadeRestrictions": {
+        "message": "הדרג הגבלות ראש של מסמכים אל תת־מסמכים",
         "description": ""
     },
     "ClearClickDescription": {
@@ -164,7 +168,7 @@
         "description": ""
     },
     "Description": {
-        "message": "אקסטרה הגנה עבור Firefox שלך: NoScript מתיר JavaScript, Flash (ומתקעים אחרים) רק עבור תחומים מהימנים לבחירתך (למשל, האתר של הבנקאות הביתית שלך). אופן מניעתי מבוסס־רשימה לבנה זה של חסימה מונע ניצול של פגיעויות אבטחה (ידועות ואפילו בלתי ידועות!) ללא אובדן תפקודיות... מומחים יסכימו: Firefox באמת בטוח יותר עם NoScript :-)",
+        "message": "הגנה מירבית לדפדפן שלך: NoScript מתיר תוכן פעיל רק עבור תחומים מהימנים לבחירתך כדי למנוע ניצול פירצות.",
         "description": ""
     },
     "Donate": {
@@ -236,7 +240,7 @@
         "description": ""
     },
     "HighContrast": {
-        "message": "מַרְאֶה של ניגודיות גבוהה",
+        "message": "ניגודיות גבוהה",
         "description": ""
     },
     "httpsOnly": {
@@ -355,6 +359,10 @@
         "message": "הפוך בקשות POST חוצות־אתרים אל בקשות GET מופחתות־נתונים",
         "description": ""
     },
+    "OptOverrideTorBrowserPolicy": {
+        "message": "דרוס הגדרה של רמת אבטחה של דפדפן Tor",
+        "description": ""
+    },
     "Options": {
         "message": "אפשרויות...",
         "description": ""
@@ -464,11 +472,11 @@
         "description": ""
     },
     "SecureCookiesExceptions": {
-        "message": "התעלם מעוגיות בלתי בטוחות שהוגדרו על HTTPS ע\"י האתרים הבאים:",
+        "message": "התעלם מעוגיות בלתי בטוחות שהוגדרו על HTTPS ע״י האתרים הבאים:",
         "description": ""
     },
     "SecureCookiesForced": {
-        "message": "אלץ הצפנה עבור כל העוגיות שהוגדרו על HTTPS ע\"י האתרים הבאים:",
+        "message": "אלץ הצפנה עבור כל העוגיות שהוגדרו על HTTPS ע״י האתרים הבאים:",
         "description": ""
     },
     "SecurityManager": {
@@ -612,7 +620,7 @@
         "description": ""
     },
     "XSS_promptMessage": {
-        "message": "NoScript גילה מתקפת תיסרוט חוצת־אתרים אפשרית\nמן $1 אל $2.\nנתונים חשודים:\n$3",
+        "message": "NoScript גילה מתקפת תיסרוט חוצת־אתרים פוטנציאלית\nמן $1 אל $2.\nנתונים חשודים:\n$3",
         "description": ""
     },
     "XSS_optBlock": {
@@ -708,7 +716,7 @@
         "description": ""
     },
     "bookmarkSync_message": {
-        "message": "סימנייה זו אינה אמורה להיפתח, אלא להסתנכרן ע\"י שימוש בשירות כגון Weave או ההרחבה XMarks.",
+        "message": "סימנייה זו אינה אמורה להיפתח, אלא להסתנכרן ע״י שימוש בשירות כגון Weave או ההרחבה XMarks.",
         "description": ""
     },
     "bookmarkSync_title": {
@@ -741,6 +749,10 @@
     },
     "cap_fetch": {
         "message": "משוך",
+        "description": ""
+    },
+    "cap_ping": {
+        "message": "פִּינְג",
         "description": ""
     },
     "cap_other": {
@@ -840,7 +852,7 @@
         "description": ""
     },
     "removal_message": {
-        "message": "ע\"י השבתה או הסרה של NoScript, אתה מוותר על כל ההגנות המסופקות ע\"י NoScript.\n\nאם רק נמאס לך לטפל בהרשאות תסריט אתר־אחר־אתר, יש בחירה בטוחה יותר.\n\nNoScript יכול להפסיק לחסום תסריטים, מלבד אלו שתסמן כבלתי מהימנים, בזמן שהוא עדין מגן עליך עם אמצעיי־הנגד המתקדמים ביותר של אבטחה נגד XSS, Clickjacking, CSRF ואיומי רשת אחרים.\n\nהאם באמת אתה רוצה להסיר את כל ההגנות של NoScript?\n",
+        "message": "ע״י השבתה או הסרה של NoScript, אתה מוותר על כל ההגנות המסופקות ע״י NoScript.\n\nאם רק נמאס לך לטפל בהרשאות תסריט אתר־אחר־אתר, יש בחירה בטוחה יותר.\n\nNoScript יכול להפסיק לחסום תסריטים, מלבד אלו שתסמן כבלתי מהימנים, בזמן שהוא עדין מגן עליך עם אמצעיי־הנגד המתקדמים ביותר של אבטחה נגד XSS, Clickjacking, CSRF ואיומי רשת אחרים.\n\nהאם באמת אתה רוצה להסיר את כל ההגנות של NoScript?\n",
         "description": ""
     },
     "removal_no": {
